@@ -18,6 +18,21 @@ public class Environment {
         this.blacks = blacks;
     }
 
+    public void init_env(int boardHeight, int boardWidth) {
+        //init for white pawns position
+        for(int y = 0; y < 2; y++) {
+            for(int x = 0; x < boardWidth; x++) {
+                whites.add(new Point(x,y));
+            }
+        }
+        //init for blacks pawns position
+        for(int y = boardHeight - 2; y < boardHeight ; y++) {
+            for(int x = 0; x < boardWidth; x++) {
+                blacks.add(new Point(x,y));
+            }
+        }
+    }
+
     public int getBoardHeight() {
         return boardHeight;
     }

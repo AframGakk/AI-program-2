@@ -14,7 +14,9 @@ public class State {
         List<Action> retList = new ArrayList<>();
 
         if (this.player == Player.WHITE) {
+            for() {
 
+            }
 
         } else {
 
