@@ -50,13 +50,27 @@ public class Environment {
         this.whites = whites;
     }
 
-    // TODO: move black in environment
-    public void moveBlack() {
-
+    // move black in environment
+    public void moveBlack(Action action) {
+		if(blacks.contains(action.from)) {
+            blacks.remove(action.from);
+            blacks.add(action.to);
+        }
+        else {
+            System.out.println("ERROR");
+            System.out.println("Im inside ENV moveBlack");
+        }
     }
 
-    // TODO: move white in environment
-    public void moveWhite() {
-
+    // move white in environment
+    public void moveWhite(Action action) {
+        if(whites.contains(action.from)) {
+            whites.remove(action.from);
+            whites.add(action.to);
+        }
+        else {
+            System.out.println("ERROR");
+            System.out.println("Im inside ENV moveWhite");
+        }
     }
 }

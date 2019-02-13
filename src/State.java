@@ -7,6 +7,7 @@ public class State {
 
     private Environment environment;
     private Player player;
+    //successorsStates;
 
 
     public List<Action> legalActions() {

@@ -15,7 +15,7 @@ public class RandomAgent implements Agent
     public void init(String role, int width, int height, int playclock) {
 		this.role = role;
 		this.playclock = playclock;
-		myTurn = !role.equals("white");
+		myTurn = !role.equals("white"); 
 		this.width = width;
 		this.height = height;
 		// TODO: add your own initialization code here
