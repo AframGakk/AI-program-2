@@ -4,11 +4,16 @@ import java.util.HashSet;
 public class Environment {
     private int boardWidth;
     private int boardHeight;
-    // 0 = empty,   1 = white,  2 = black
-    //private int[][] map;
 
-    HashSet<Point> whites;
-    HashSet<Point> blacks;
+    private HashSet<Point> whites;
+    private HashSet<Point> blacks;
+
+    public Environment(int boardHeight, int boardWidth) {
+        this.boardHeight = boardHeight;
+        this.boardWidth = boardWidth;
+        this.whites = new HashSet<Point>();
+        this.blacks = new HashSet<Point>();
+    }
 
     public Environment(int boardHeight, int boardWidth, HashSet<Point> whites, HashSet<Point> blacks) {
         this.boardHeight = boardHeight;
@@ -18,17 +23,18 @@ public class Environment {
         this.blacks = blacks;
     }
 
-    public void init_env(int boardHeight, int boardWidth) {
+    public void init_env() {
+
         //init for white pawns position
-        for(int y = 0; y < 2; y++) {
-            for(int x = 0; x < boardWidth; x++) {
-                whites.add(new Point(x,y));
+        for(int y = 1; y <= 2; y++) {
+            for(int x = 1; x <= boardWidth; x++) {
+                blacks.add(new Point(x,y));
             }
         }
         //init for blacks pawns position
-        for(int y = boardHeight - 2; y < boardHeight ; y++) {
-            for(int x = 0; x < boardWidth; x++) {
-                blacks.add(new Point(x,y));
+        for(int y = boardHeight - 1; y <= boardHeight; y++) {
+            for(int x = 1; x <= boardWidth; x++) {
+                whites.add(new Point(x,y));
             }
         }
     }

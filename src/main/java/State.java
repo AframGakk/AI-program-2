@@ -11,12 +11,10 @@ public class State {
 
 
     public List<Action> legalActions() {
-        List<Action> retList = new ArrayList<>();
+        List<Action> retList = new ArrayList<Action>();
 
         if (this.player == Player.WHITE) {
-            for() {
 
-            }
 
         } else {
 
