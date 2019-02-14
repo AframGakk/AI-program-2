@@ -1,7 +1,7 @@
 
 
 public class NewAgent implements Agent {
-	//TODO
+	//TODO:
 	public void init(String role, int width, int height, int playclock) {
 
 	};
