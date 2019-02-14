@@ -20,19 +20,24 @@ public class EnvironmentTest {
         this.whites = new HashSet<Point>();
         this.blacks = new HashSet<Point>();
 
-        blacks.add(new Point(1,1));
-        blacks.add(new Point(2,1));
-        blacks.add(new Point(3,1));
-        blacks.add(new Point(1,2));
-        blacks.add(new Point(2,2));
-        blacks.add(new Point(3,2));
+        whites.add(new Point(1,1));
+        whites.add(new Point(2,1));
+        whites.add(new Point(3,1));
+        whites.add(new Point(1,2));
+        whites.add(new Point(2,2));
+        whites.add(new Point(3,2));
 
-        whites.add(new Point(1,4));
-        whites.add(new Point(2,4));
-        whites.add(new Point(3,4));
-        whites.add(new Point(1,5));
-        whites.add(new Point(2,5));
-        whites.add(new Point(3,5));
+        blacks.add(new Point(1,4));
+        blacks.add(new Point(2,4));
+        blacks.add(new Point(3,4));
+        blacks.add(new Point(1,5));
+        blacks.add(new Point(2,5));
+        blacks.add(new Point(3,5));
+    }
+
+    @Test
+    public void PrintMap() {
+
     }
 
     // ASSERT

@@ -28,14 +28,48 @@ public class Environment {
         //init for white pawns position
         for(int y = 1; y <= 2; y++) {
             for(int x = 1; x <= boardWidth; x++) {
-                blacks.add(new Point(x,y));
+                whites.add(new Point(x,y));
             }
         }
         //init for blacks pawns position
         for(int y = boardHeight - 1; y <= boardHeight; y++) {
             for(int x = 1; x <= boardWidth; x++) {
-                whites.add(new Point(x,y));
+                blacks.add(new Point(x,y));
             }
+        }
+    }
+
+    public void capture(Action action, Player player) {
+        if (player == Player.WHITE) {
+            blacks.remove(action.to);
+            moveWhite(action);
+        } else {
+            whites.remove(action.to);
+            moveBlack(action);
+        }
+    }
+
+    public boolean canCaptureLeft(Point pawn, Player player) {
+        if(player == Player.WHITE) {
+            return blacks.contains(new Point(pawn.x + 1, pawn.y + 1));
+        } else {
+            return whites.contains(new Point(pawn.x - 1, pawn.y - 1));
+        }
+    }
+
+    public boolean canCaptureRight(Point pawn, Player player) {
+        if(player == Player.WHITE) {
+            return blacks.contains(new Point(pawn.x - 1, pawn.y + 1));
+        } else {
+            return whites.contains(new Point(pawn.x + 1, pawn.y - 1));
+        }
+    }
+
+    public boolean canGoForward(Point pawn, Player player) {
+        if(player == Player.WHITE) {
+            return !(blacks.contains(new Point(pawn.x, pawn.y + 1)) || pawn.y == this.boardHeight);
+        } else {
+            return !(whites.contains(new Point(pawn.x, pawn.y - 1)) || pawn.y == 0);
         }
     }
 
