@@ -1,3 +1,5 @@
+import com.sun.tools.doclint.Env;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +11,12 @@ public class State {
     private Player player;
     //successorsStates;
 
+    public State() {}
+
+    public State(Environment environment, Player player) {
+        this.environment = environment;
+        this.player = player;
+    }
 
     public List<Action> legalActions() {
         List<Action> retList = new ArrayList<Action>();
@@ -51,5 +59,26 @@ public class State {
 
         return retList;
     }
+
+    public State nextState(Action action) {
+        HashSet<Point> newBlacks = new HashSet<Point>();
+        HashSet<Point> newWhites = new HashSet<Point>();
+        this.environment.getBlacks().addAll(newBlacks);
+        this.environment.getWhites().addAll(newWhites);
+        Environment newEnvironment = new Environment(this.environment.getBoardHeight(), this.environment.getBoardWidth(),
+                newWhites, newBlacks);
+        newEnvironment.movePlayer(action, this.player);
+
+        return new State(newEnvironment, switchPlayer());
+    }
+
+    private Player switchPlayer() {
+        if (this.player == Player.WHITE) {
+            return Player.BLACK;
+        } else {
+            return Player.WHITE;
+        }
+    }
+
 
 }

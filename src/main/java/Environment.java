@@ -39,15 +39,7 @@ public class Environment {
         }
     }
 
-    public void capture(Action action, Player player) {
-        if (player == Player.WHITE) {
-            blacks.remove(action.to);
-            moveWhite(action);
-        } else {
-            whites.remove(action.to);
-            moveBlack(action);
-        }
-    }
+
 
     public boolean canCaptureLeft(Point pawn, Player player) {
         if(player == Player.WHITE) {
@@ -105,27 +97,32 @@ public class Environment {
         this.whites = whites;
     }
 
-    // move black in environment
-    public void moveBlack(Action action) {
-		if(blacks.contains(action.from)) {
-            blacks.remove(action.from);
-            blacks.add(action.to);
-        }
-        else {
-            System.out.println("ERROR");
-            System.out.println("Im inside ENV moveBlack");
-        }
-    }
 
-    // move white in environment
-    public void moveWhite(Action action) {
-        if(whites.contains(action.from)) {
-            whites.remove(action.from);
-            whites.add(action.to);
-        }
-        else {
-            System.out.println("ERROR");
-            System.out.println("Im inside ENV moveWhite");
+    public void movePlayer(Action action, Player player) {
+        if (player == Player.WHITE) {
+            if(whites.contains(action.from)) {
+                if(action.isCapturing()) {
+                    blacks.remove(action.to);
+                }
+                whites.remove(action.from);
+                whites.add(action.to);
+            }
+            else {
+                System.out.println("ERROR");
+                System.out.println("Im inside ENV moveWhite");
+            }
+        } else {
+            if(blacks.contains(action.from)) {
+                if(action.isCapturing()) {
+                    whites.remove(action.to);
+                }
+                blacks.remove(action.from);
+                blacks.add(action.to);
+            }
+            else {
+                System.out.println("ERROR");
+                System.out.println("Im inside ENV moveBlack");
+            }
         }
     }
 }
