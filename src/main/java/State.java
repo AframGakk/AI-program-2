@@ -11,6 +11,7 @@ public class State {
     private Player player;
     private boolean currentPlayer;
     private Result result;
+    private int score;
     //successorsStates;
 
     public State() {}
@@ -121,20 +122,44 @@ public class State {
     public int evaluateTerminal() {
         switch (result) {
             case WIN: 
+                score = 100;
                 return 100;
             case LOSS:
+                score = -100;
                 return -100;
             default:
+                score = 0;
                 return 0;
         }
     }
     //distance of most advanced black pawn to row 1 - distance of maost advanced white 
     //pawn to row Height, for non-terminal states
     public int evaluateNonTerminal() {
-        return 0;
+        int minBlack = Integer.MAX_VALUE;
+        int minWhite = Integer.MAX_VALUE;
+        for (Point point : this.environment.getWhites()) {
+            if(minWhite > this.environment.getBoardHeight() - point.y) {
+                minWhite = this.environment.getBoardHeight() - point.y;
+            }
+        }
+        for (Point point : this.environment.getBlacks()) {
+            if(minBlack > point.y - 1) {
+                minBlack = point.y - 1;
+            }
+        }
+
+        if(currentPlayer) {
+            if(player == player.WHITE) {
+                return minWhite - minBlack;
+            } else {
+                return minBlack - minWhite;
+            }
+        } else {
+            if(player == player.WHITE) {
+                return minBlack - minWhite;
+            } else {
+                return minWhite - minBlack;
+            }
+        }
     }
-
-
-
-
 }
