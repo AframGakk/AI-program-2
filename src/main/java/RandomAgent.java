@@ -62,7 +62,7 @@ public class RandomAgent implements Agent
 	}
 
 	// is called when the game is over or the match is aborted
-	@Override
+	//@Override
 	public void cleanup() {
 		// TODO: cleanup so that the agent is ready for the next match
 	}

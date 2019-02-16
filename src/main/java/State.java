@@ -22,6 +22,7 @@ public class State {
         List<Action> retList = new ArrayList<Action>();
         HashSet<Point> pawns;
 
+
         if (this.player == Player.WHITE) {
             pawns = environment.getWhites();
 
