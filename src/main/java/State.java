@@ -9,6 +9,8 @@ public class State {
 
     private Environment environment;
     private Player player;
+    private boolean currentPlayer;
+    private Result result;
     //successorsStates;
 
     public State() {}
@@ -16,6 +18,7 @@ public class State {
     public State(Environment environment, Player player) {
         this.environment = environment;
         this.player = player;
+        this.result = result.UNKNOWN;
     }
 
     public List<Action> legalActions() {
@@ -68,17 +71,70 @@ public class State {
         Environment newEnvironment = new Environment(this.environment.getBoardHeight(), this.environment.getBoardWidth(),
                 newWhites, newBlacks);
         newEnvironment.movePlayer(action, this.player);
-
-        return new State(newEnvironment, switchPlayer());
+        State newState = new State(newEnvironment, this.player);
+        newState.switchPlayer();
+        return newState;
     }
 
-    private Player switchPlayer() {
+    private void switchPlayer() {
         if (this.player == Player.WHITE) {
-            return Player.BLACK;
+            this.player = Player.BLACK;
         } else {
-            return Player.WHITE;
+            this.player = Player.WHITE;
+        }
+        this.currentPlayer = !this.currentPlayer;
+    }
+
+    //returns true if isTerminal else false
+    public boolean isTerminal() {
+        for(int i = 1; i < this.environment.getBoardWidth(); i++) {
+            if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
+                if(player == player.WHITE && currentPlayer) {
+                    this.result = Result.WIN;
+                }
+                else {
+                    this.result = Result.LOSS;
+                }
+                return true;
+            }
+            if(this.environment.getBlacks().contains(new Point(i, 0))) {
+                if(player == player.BLACK && currentPlayer) {
+                    this.result = Result.WIN;
+                }
+                else {
+                    this.result = Result.LOSS;
+                    return true;
+                }
+            }
+        }
+        if(legalActions().isEmpty()) {
+            this.result = Result.DRAW;
+            return true;
+        }
+        return false;
+    }
+
+    //100 points if white won the game
+    // 0 points for draw
+    //-100 points if white lost the game
+    
+    public int evaluateTerminal() {
+        switch (result) {
+            case WIN: 
+                return 100;
+            case LOSS:
+                return -100;
+            default:
+                return 0;
         }
     }
+    //distance of most advanced black pawn to row 1 - distance of maost advanced white 
+    //pawn to row Height, for non-terminal states
+    public int evaluateNonTerminal() {
+        return 0;
+    }
+
+
 
 
 }
