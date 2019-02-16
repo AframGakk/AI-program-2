@@ -22,6 +22,25 @@ public class State {
         this.result = result.UNKNOWN;
     }
 
+    public State(Environment environment, Player player, boolean currentPlayer) {
+        this.environment = environment;
+        this.player = player;
+        this.result = result.UNKNOWN;
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setCurrentPlayer(boolean currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
     public List<Action> legalActions() {
         List<Action> retList = new ArrayList<Action>();
         HashSet<Point> pawns;
@@ -97,6 +116,7 @@ public class State {
                 else {
                     this.result = Result.LOSS;
                 }
+                evaluateTerminal();
                 return true;
             }
             if(this.environment.getBlacks().contains(new Point(i, 0))) {
@@ -105,14 +125,17 @@ public class State {
                 }
                 else {
                     this.result = Result.LOSS;
-                    return true;
                 }
+                evaluateTerminal();
+                return true;
             }
         }
         if(legalActions().isEmpty()) {
             this.result = Result.DRAW;
+            evaluateTerminal();
             return true;
         }
+        evaluateNonTerminal();
         return false;
     }
 
