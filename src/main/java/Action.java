@@ -22,6 +22,6 @@ public class Action {
 
     @Override
     public String toString() {
-        return  "(move " + from.x + " " + from.y + " " + to.x + " " + to.y + ")";
+        return  "(move " + this.from.x + " " + this.from.y + " " + this.to.x + " " + this.to.y + ")";
     }
 }

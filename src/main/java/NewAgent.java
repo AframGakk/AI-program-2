@@ -78,7 +78,7 @@ public class NewAgent implements Agent {
 		if (myTurn) {
 			// TODO: 2. run alpha-beta search to determine the best move
 
-			//this.root.getState().getEnvironment().printEnvironment();
+			this.root.getState().getEnvironment().printEnvironment();
 			Action best = MiniMax(root);
 			//System.out.println("Inni nextaction");
 			//System.out.println(best.from.x + " " + best.from.y);
@@ -122,6 +122,7 @@ public class NewAgent implements Agent {
 		Action action = null;
 		try {
 			maxVal = MiniMax(node, true);
+			//maxVal = AlphaBetaSearch(MaxDepth, s, -INF, INF);
 		} catch (Exception ex) {
 			System.out.println("Playclock exceeded!");
 			action = bestAction(node);
@@ -170,4 +171,25 @@ public class NewAgent implements Agent {
 		}
 		return bestValue;
 	}
+
+	//Pseduo-code
+	public int AlphaBetaSearch(int depth, StateNode node, int alpha, int beta) {
+		if(node.getState().isTerminal() || depth <= 0) {
+			return node.getState().getScore(); //return evaluate(s);
+		}
+		int bestValue = Integer.MIN_VALUE;
+		int value;
+		node.getSuccessors();
+
+		for(StateNode child : node.getChildren()) {
+			value = -AlphaBetaSearch(depth - 1, child, - beta, -alpha);
+
+			bestValue = Math.max(value, bestValue);
+			if(bestValue > alpha) {
+				alpha = bestValue;
+				if(alpha >= beta) break;
+			}
+		}
+		return bestValue;
+	};
 }
