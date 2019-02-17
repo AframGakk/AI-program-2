@@ -90,8 +90,8 @@ public class State {
     public State nextState(Action action) {
         HashSet<Point> newBlacks = new HashSet<Point>();
         HashSet<Point> newWhites = new HashSet<Point>();
-        this.environment.getBlacks().addAll(newBlacks);
-        this.environment.getWhites().addAll(newWhites);
+        newBlacks.addAll(this.environment.getBlacks());
+        newWhites.addAll(this.environment.getWhites());
         Environment newEnvironment = new Environment(this.environment.getBoardHeight(), this.environment.getBoardWidth(),
                 newWhites, newBlacks);
         newEnvironment.movePlayer(action, this.player);

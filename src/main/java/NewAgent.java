@@ -14,7 +14,8 @@ public class NewAgent implements Agent {
 	private StateNode root;
 
 	/*
-		init(String role, int playclock) is called once before you have to select the first action. Use it to initialize the agent. role is either "white" or "black" and playclock is the number of seconds after which nextAction must return.
+		init(String role, int playclock) is called once before you have to select the first action. 
+		Use it to initialize the agent. role is either "white" or "black" and playclock is the number of seconds after which nextAction must return.
 	*/
 	public void init(String role, int width, int height, int playclock) {
 		this.role = role;
@@ -64,7 +65,11 @@ public class NewAgent implements Agent {
 				action = new Action(new Point(x1, y1), new Point(x2, y2), false);
 			}
 
+			//System.out.println("Before");
+			//root.getState().getEnvironment().printEnvironment();
 			root.setState(root.getState().nextState(action));
+			//System.out.println("After");
+			//root.getState().getEnvironment().printEnvironment();
 
 		}
 
@@ -73,8 +78,11 @@ public class NewAgent implements Agent {
 		if (myTurn) {
 			// TODO: 2. run alpha-beta search to determine the best move
 
-			this.root.getState().getEnvironment().printEnvironment();
+			//this.root.getState().getEnvironment().printEnvironment();
 			Action best = MiniMax(root);
+			//System.out.println("Inni nextaction");
+			//System.out.println(best.from.x + " " + best.from.y);
+			//System.out.println(+ best.to.x + " " + best.to.y);
 
 			return "(move " + best.from.x + " " + best.from.y + " " + best.to.x + " " + best.to.y + ")";
 		} else {
@@ -89,56 +97,74 @@ public class NewAgent implements Agent {
 
 	}
 
-	public Action MiniMax(StateNode node)  {
-
-		int maxVal = 0;
-		stopwatch = new Stopwatch();
-
-		try {
-			if (this.playclock < this.stopwatch.elapsedTime()) {
-				throw new Exception();
-			}
-
-			maxVal = MiniMax(node, true);
-		} catch (Exception ex) {
-			System.out.println("Playclock exceeded!");
-		}
-
+	private Action bestAction(StateNode node) {
+		int maxVal = Integer.MIN_VALUE;
 		Action action = null;
 
-		System.out.println("EXCEPTION PASSED");
-
-		for(StateNode childNode : node.successors()) {
+		for(StateNode childNode : node.getChildren()) {
+			//System.out.println("Inni ForEach inni ACTIONMINIMAX");
+			//System.out.println(childNode.getState().getScore());
 			if(maxVal < childNode.getState().getScore()) {
 				maxVal = childNode.getState().getScore();
 				action = childNode.getAction();
 			}
 		}
+		//System.out.println("Eftir FOREACH ACTIONMINIMAX");
+		//System.out.println(action);
+		return action;
+	};
 
+	public Action MiniMax(StateNode node)  {
+
+		int maxVal = Integer.MIN_VALUE;
+		stopwatch = new Stopwatch();
+		node.getSuccessors();
+		Action action = null;
+		try {
+			maxVal = MiniMax(node, true);
+		} catch (Exception ex) {
+			System.out.println("Playclock exceeded!");
+			action = bestAction(node);
+			return action;
+		}
+
+		//System.out.println("EXCEPTION PASSED");
+		//System.out.println("children length:");
+		//System.out.println(node.getChildren().size());
+
+		action = bestAction(node);
 		return action;
 	}
 
 	public int MiniMax(StateNode node, boolean player) throws Exception {
-
+		if (this.stopwatch.elapsedTime() > this.playclock) {
+			throw new Exception();
+		}
 
 		if(node.getState().isTerminal()) {
 			// Hérna returnum við action
+			//System.out.println("Is in Terminal MINIMAX");
+			//node.getState().getEnvironment().printEnvironment();
+			//System.out.println("Score" + node.getState().getScore());
+			//System.out.println("Result" + node.getState().getResult());
+
 			return node.getState().getScore();
 		}
 
 		int bestValue;
 		int value;
+		node.getSuccessors();
 
 		if (player) {
 			bestValue = Integer.MIN_VALUE;
-			for (StateNode child : node.successors()) {
+			for (StateNode child : node.getChildren()) {
 				value = MiniMax(child, !player);
 				bestValue = Math.max(value, bestValue);
 			}
 		} else {
 			bestValue = Integer.MAX_VALUE;
-			for (StateNode child : node.successors()) {
-				value = MiniMax(child, !player);
+			for (StateNode child : node.getChildren()) {
+				value = MiniMax(child, !player); //!player
 				bestValue = Math.min(value, bestValue);
 			}
 		}

@@ -20,16 +20,17 @@ public class StateNode {
         this.action = action;
     }
 
-    public List<StateNode> successors() {
+
+    public void getSuccessors() {
         List<StateNode> retList = new ArrayList<StateNode>();
 
         for(Action legalAction : state.legalActions()) {
             State tmpState = state.nextState(legalAction);
 
             StateNode tmpNode = new StateNode(this, tmpState, legalAction);
+            retList.add(tmpNode);
         }
-
-        return retList;
+        this.children = retList;
     }
 
     public StateNode getParent() {
