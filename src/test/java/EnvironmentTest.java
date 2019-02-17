@@ -1,4 +1,3 @@
-import com.sun.webkit.dom.EntityReferenceImpl;
 import org.junit.Test;
 
 import java.awt.*;

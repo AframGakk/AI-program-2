@@ -20,6 +20,18 @@ public class StateNode {
         this.action = action;
     }
 
+    public List<StateNode> successors() {
+        List<StateNode> retList = new ArrayList<StateNode>();
+
+        for(Action legalAction : state.legalActions()) {
+            State tmpState = state.nextState(legalAction);
+
+            StateNode tmpNode = new StateNode(this, tmpState, legalAction);
+        }
+
+        return retList;
+    }
+
     public StateNode getParent() {
         return parent;
     }

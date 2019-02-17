@@ -1,4 +1,3 @@
-import com.sun.tools.doclint.Env;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,6 +38,10 @@ public class State {
 
     public void setCurrentPlayer(boolean currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
     }
 
     public List<Action> legalActions() {

@@ -125,4 +125,20 @@ public class Environment {
             }
         }
     }
+
+    public void printEnvironment() {
+        System.out.println("========    Environment   ========");
+        for(int y = 1; y <= this.boardHeight; y++) {
+            for(int x = 1; x <= this.boardWidth; x++) {
+                if(whites.contains(new Point(x, y))) {
+                    System.out.print("W");
+                } else if (blacks.contains(new Point(x, y))) {
+                    System.out.print("B");
+                } else {
+                    System.out.print("O");
+                }
+            }
+            System.out.println();
+        }
+    }
 }

@@ -1,5 +1,5 @@
-import com.sun.tools.doclint.Env;
 
+import java.awt.*;
 import java.util.Random;
 
 public class NewAgent implements Agent {
@@ -9,6 +9,7 @@ public class NewAgent implements Agent {
 	private int playclock; // this is how much time (in seconds) we have before nextAction needs to return a move
 	private boolean myTurn; // whether it is this agent's turn or not
 	private int width, height; // dimensions of the board
+	private Stopwatch stopwatch;
 
 	private StateNode root;
 
@@ -52,6 +53,19 @@ public class NewAgent implements Agent {
 			System.out.println(roleOfLastPlayer + " moved from " + x1 + "," + y1 + " to " + x2 + "," + y2);
 			// TODO: 1. update your internal world model according to the action that was just executed
 
+			Action action;
+
+			if(x1 != x2) {
+				// capturing
+				action = new Action(new Point(x1, y1), new Point(x2, y2), true);
+
+			} else {
+				// not capturing
+				action = new Action(new Point(x1, y1), new Point(x2, y2), false);
+			}
+
+			root.setState(root.getState().nextState(action));
+
 		}
 
 		// update turn (above that line it myTurn is still for the previous state)
@@ -59,19 +73,10 @@ public class NewAgent implements Agent {
 		if (myTurn) {
 			// TODO: 2. run alpha-beta search to determine the best move
 
-			// Here we just construct a random move (that will most likely not even be possible),
-			// this needs to be replaced with the actual best move.
-			int x1,y1,x2,y2;
-			x1 = random.nextInt(width)+1;
-			x2 = x1 + random.nextInt(3)-1;
-			if (role.equals("white")) {
-				y1 = random.nextInt(height-1);
-				y2 = y1 + 1;
-			} else {
-				y1 = random.nextInt(height-1)+2;
-				y2 = y1 - 1;
-			}
-			return "(move " + x1 + " " + y1 + " " + x2 + " " + y2 + ")";
+			this.root.getState().getEnvironment().printEnvironment();
+			Action best = MiniMax(root);
+
+			return "(move " + best.from.x + " " + best.from.y + " " + best.to.x + " " + best.to.y + ")";
 		} else {
 			return "noop";
 		}
@@ -81,5 +86,62 @@ public class NewAgent implements Agent {
 	//@Override
 	public void cleanup() {
 		// TODO: cleanup so that the agent is ready for the next match
+
+	}
+
+	public Action MiniMax(StateNode node)  {
+
+		int maxVal = 0;
+		stopwatch = new Stopwatch();
+
+		try {
+			if (this.playclock < this.stopwatch.elapsedTime()) {
+				throw new Exception();
+			}
+
+			maxVal = MiniMax(node, true);
+		} catch (Exception ex) {
+			System.out.println("Playclock exceeded!");
+		}
+
+		Action action = null;
+
+		System.out.println("EXCEPTION PASSED");
+
+		for(StateNode childNode : node.successors()) {
+			if(maxVal < childNode.getState().getScore()) {
+				maxVal = childNode.getState().getScore();
+				action = childNode.getAction();
+			}
+		}
+
+		return action;
+	}
+
+	public int MiniMax(StateNode node, boolean player) throws Exception {
+
+
+		if(node.getState().isTerminal()) {
+			// Hérna returnum við action
+			return node.getState().getScore();
+		}
+
+		int bestValue;
+		int value;
+
+		if (player) {
+			bestValue = Integer.MIN_VALUE;
+			for (StateNode child : node.successors()) {
+				value = MiniMax(child, !player);
+				bestValue = Math.max(value, bestValue);
+			}
+		} else {
+			bestValue = Integer.MAX_VALUE;
+			for (StateNode child : node.successors()) {
+				value = MiniMax(child, !player);
+				bestValue = Math.min(value, bestValue);
+			}
+		}
+		return bestValue;
 	}
 }
