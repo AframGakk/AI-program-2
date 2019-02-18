@@ -1,6 +1,7 @@
 
 import java.awt.*;
 import java.util.Random;
+import java.util.Stack;
 
 public class NewAgent implements Agent {
 	private Random random = new Random();
@@ -12,6 +13,8 @@ public class NewAgent implements Agent {
 	private Stopwatch stopwatch;
 
 	private StateNode root;
+
+	private Stack<StateNode> testList;
 
 	/*
 		init(String role, int playclock) is called once before you have to select the first action. 
@@ -131,6 +134,13 @@ public class NewAgent implements Agent {
 			return action;
 		}
 
+		while (!testList.isEmpty()) {
+			StateNode tmp = testList.pop();
+			System.out.println("Node check");
+			tmp.getState().getEnvironment();
+			tmp.getState().getScore();
+		}
+
 		//System.out.println("EXCEPTION PASSED");
 		//System.out.println("children length:");
 		//System.out.println(node.getChildren().size());
@@ -146,11 +156,12 @@ public class NewAgent implements Agent {
 
 		if(node.getState().isTerminal()) {
 			// Hérna returnum við action
-			System.out.println("Is in Terminal MINIMAX");
-			node.getState().getEnvironment().printEnvironment();
-			System.out.println("Score " + node.getState().getScore());
-			System.out.println("Result " + node.getState().getResult());
+			//System.out.println("Is in Terminal MINIMAX");
+			//node.getState().getEnvironment().printEnvironment();
+			//System.out.println("Score " + node.getState().getScore());
+			//System.out.println("Result " + node.getState().getResult());
 
+			pushTestToStack(node);
 
 			return node.getState().getScore();
 		}
@@ -211,5 +222,14 @@ public class NewAgent implements Agent {
 		node.getState().getEnvironment().printEnvironment();
 
 
+	}
+
+	public void pushTestToStack(StateNode node) {
+		if(node.getParent() == null) {
+			return;
+		}
+
+		testList.push(node);
+		pushTestToStack(node);
 	}
 }

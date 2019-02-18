@@ -1,5 +1,10 @@
 public class TimeException extends Exception {
-    private TimeException(String msg){
+    public TimeException(String msg){
         super(msg);
+    }
+
+    @Override
+    public String getMessage() {
+        return super.getMessage();
     }
 }

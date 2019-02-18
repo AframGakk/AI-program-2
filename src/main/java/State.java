@@ -11,7 +11,6 @@ public class State {
     private boolean currentPlayer;
     private Result result;
     private int score;
-    //successorsStates;
 
     public State() {}
 
@@ -112,72 +111,31 @@ public class State {
         this.currentPlayer = !this.currentPlayer;
     }
 
-    //returns true if isTerminal else false
-    /*public boolean isTerminal() {
-        for(int i = 1; i < this.environment.getBoardWidth(); i++) {
-            if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
-                if(player == player.BLACK && currentPlayer) {
-                    this.result = Result.LOSS;
-                }
-                else {
-                    this.result = Result.WIN;
-                }
-                evaluateTerminal();
-                return true;
-            }
-            if(this.environment.getBlacks().contains(new Point(i, 0))) {
-                if(player == player.WHITE && currentPlayer) {
-                    this.result = Result.LOSS;
-                }
-                else {
-                    this.result = Result.WIN;
-                }
-                evaluateTerminal();
-                return true;
-            }
-        }
-        // vantar ef pawn klárast líka hvoru meginn þá er DRAW
-        if(legalActions().isEmpty() || this.environment.getBlacks().isEmpty() || this.environment.getWhites().isEmpty()) {
-            this.result = Result.DRAW;
-            evaluateTerminal();
-            return true;
-        }
-        evaluateNonTerminal();
-        return false;
-    }
-    */
-    // Auka ívars shit
     public boolean isTerminal() {
         if (this.goalState()) {
-            if(currentPlayer) {
-                this.result = Result.WIN;
-            } else {
-                this.result = Result.LOSS;
-
-            }
-            evaluateTerminal();
+            this.result = Result.WIN;
+            //evaluateTerminal();
             return true;
         }
         if (legalActions().isEmpty() || this.environment.getBlacks().isEmpty() || this.environment.getWhites().isEmpty()) {
             this.result = Result.DRAW;
-            evaluateTerminal();
+            //evaluateTerminal();
             return true;
         }
         if (player == player.WHITE) {
             for (int i = 1; i < this.environment.getBoardWidth(); i++) {
                 if (this.environment.getBlacks().contains(new Point(i, 1))) {
                     this.result = Result.LOSS;
-                    evaluateTerminal();
+                    //evaluateTerminal();
                     return true;
                 }
             }
-
         }
         if (player == player.BLACK) {
             for (int i = 1; i < this.environment.getBoardWidth(); i++) {
                 if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
                     this.result = Result.LOSS;
-                    evaluateTerminal();
+                    //evaluateTerminal();
                     return true;
                 }
             }
@@ -191,32 +149,31 @@ public class State {
     //-100 points if white lost the game
     
     public int evaluateTerminal() {
+        int extraEval = evaluateNonTerminal();
+
         switch (result) {
             case WIN: 
-                score = 100;
-                return 100;
+                score = 100 - extraEval;
+                return 100 - extraEval;
             case LOSS:
-                score = -100;
-                return -100;
+                score = -100 - extraEval;
+                return -100 - extraEval;
             default:
-                score = 0;
-                return 0;
+                score = 0 - extraEval;
+                return 0 - extraEval;
         }
     }
+
     //distance of most advanced black pawn to row 1 - distance of maost advanced white 
     //pawn to row Height, for non-terminal states
     public int evaluateNonTerminal() {
-        int minBlack = Integer.MAX_VALUE;
-        int minWhite = Integer.MAX_VALUE;
+        int minBlack = 0;
+        int minWhite = 0;
         for (Point point : this.environment.getWhites()) {
-            if(minWhite > this.environment.getBoardHeight() - point.y) {
-                minWhite = this.environment.getBoardHeight() - point.y;
-            }
+            minWhite += environment.getBoardHeight() - point.y;
         }
         for (Point point : this.environment.getBlacks()) {
-            if(minBlack > point.y - 1) {
-                minBlack = point.y - 1;
-            }
+            minBlack += point.y - 1;
         }
 
         if(currentPlayer) {
@@ -233,7 +190,8 @@ public class State {
             }
         }
     }
-    ///EXTRA
+
+
     public boolean goalState() {
         if(this.player == player.WHITE) {
             for(int i = 1; i < this.environment.getBoardWidth(); i++) {
@@ -252,4 +210,7 @@ public class State {
             return false;
         }
     }
+
+
+
 }
