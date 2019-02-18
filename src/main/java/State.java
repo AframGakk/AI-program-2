@@ -35,6 +35,10 @@ public class State {
         return score;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public void setCurrentPlayer(boolean currentPlayer) {
         this.currentPlayer = currentPlayer;
     }

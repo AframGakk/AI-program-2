@@ -53,6 +53,12 @@ public class AlphaBetaAgent implements Agent {
                 roleOfLastPlayer = "black";
             }
 
+            if (roleOfLastPlayer == "white") {
+                state.setPlayer(Player.WHITE);
+            } else {
+                state.setPlayer(Player.BLACK);
+            }
+
             Action action;
 
             if(x1 != x2) {

@@ -71,28 +71,12 @@ public class Environment {
         return boardWidth;
     }
 
-    public void setBoardHeight(int boardHeight) {
-        this.boardHeight = boardHeight;
-    }
-
-    public void setBoardWidth(int boardWidth) {
-        this.boardWidth = boardWidth;
-    }
-
     public HashSet<Point> getBlacks() {
         return blacks;
     }
 
     public HashSet<Point> getWhites() {
         return whites;
-    }
-
-    public void setBlacks(HashSet<Point> blacks) {
-        this.blacks = blacks;
-    }
-
-    public void setWhites(HashSet<Point> whites) {
-        this.whites = whites;
     }
 
 

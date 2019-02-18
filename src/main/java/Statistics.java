@@ -1,9 +1,3 @@
-// TODO: Statistics
-/**
- * State expansions
- * current depth limit iterative deepening
- * runtime of search for each iteration
- * */
 
 public class Statistics {
     private int expansions;

@@ -6,10 +6,6 @@ public class Action {
 
     private boolean capturing;
 
-    public Action () {
-
-    }
-
     public Action (Point from, Point to, boolean capturing) {
         this.from = from;
         this.to = to;
