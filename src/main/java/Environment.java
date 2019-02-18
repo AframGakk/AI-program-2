@@ -39,8 +39,6 @@ public class Environment {
         }
     }
 
-
-
     public boolean canCaptureLeft(Point pawn, Player player) {
         if(player == Player.WHITE) {
             return blacks.contains(new Point(pawn.x + 1, pawn.y + 1));
@@ -59,9 +57,9 @@ public class Environment {
 
     public boolean canGoForward(Point pawn, Player player) {
         if(player == Player.WHITE) {
-            return !(blacks.contains(new Point(pawn.x, pawn.y + 1)) || pawn.y == this.boardHeight);
+            return !(blacks.contains(new Point(pawn.x, pawn.y + 1)) || pawn.y == this.boardHeight || whites.contains(new Point(pawn.x, pawn.y + 1)));
         } else {
-            return !(whites.contains(new Point(pawn.x, pawn.y - 1)) || pawn.y == 0);
+            return !(whites.contains(new Point(pawn.x, pawn.y - 1)) || pawn.y == 1 || blacks.contains(new Point(pawn.x, pawn.y - 1)));
         }
     }
 
@@ -139,6 +137,9 @@ public class Environment {
                 }
             }
             System.out.println();
+            Integer a = 1;
+            int b = 2;
+
         }
     }
 }

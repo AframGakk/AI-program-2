@@ -144,10 +144,11 @@ public class NewAgent implements Agent {
 
 		if(node.getState().isTerminal()) {
 			// Hérna returnum við action
-			//System.out.println("Is in Terminal MINIMAX");
-			//node.getState().getEnvironment().printEnvironment();
-			//System.out.println("Score" + node.getState().getScore());
-			//System.out.println("Result" + node.getState().getResult());
+			System.out.println("Is in Terminal MINIMAX");
+			node.getState().getEnvironment().printEnvironment();
+			System.out.println("Score " + node.getState().getScore());
+			System.out.println("Result " + node.getState().getResult());
+
 
 			return node.getState().getScore();
 		}
@@ -161,12 +162,14 @@ public class NewAgent implements Agent {
 			for (StateNode child : node.getChildren()) {
 				value = MiniMax(child, !player);
 				bestValue = Math.max(value, bestValue);
+				node.getState().setScore(bestValue);
 			}
 		} else {
 			bestValue = Integer.MAX_VALUE;
 			for (StateNode child : node.getChildren()) {
 				value = MiniMax(child, !player); //!player
 				bestValue = Math.min(value, bestValue);
+				node.getState().setScore(bestValue);
 			}
 		}
 		return bestValue;
@@ -192,4 +195,19 @@ public class NewAgent implements Agent {
 		}
 		return bestValue;
 	};
+
+	public void iterateToRootTest(StateNode node) {
+		if (node.getParent() == null) {
+			System.out.println("=======	ROOT FOUND =====");
+			return;
+		}
+
+		iterateToRootTest(node.getParent());
+
+		System.out.println("Iterate to Root");
+		System.out.println("Score: " + node.getState().getScore());
+		node.getState().getEnvironment().printEnvironment();
+
+
+	}
 }

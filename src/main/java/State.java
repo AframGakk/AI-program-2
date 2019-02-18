@@ -40,6 +40,10 @@ public class State {
         this.currentPlayer = currentPlayer;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public Environment getEnvironment() {
         return environment;
     }
@@ -47,7 +51,6 @@ public class State {
     public List<Action> legalActions() {
         List<Action> retList = new ArrayList<Action>();
         HashSet<Point> pawns;
-
 
         if (this.player == Player.WHITE) {
             pawns = environment.getWhites();
@@ -114,15 +117,23 @@ public class State {
         for(int i = 1; i < this.environment.getBoardWidth(); i++) {
             if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
                 if(player == player.WHITE && currentPlayer) {
+
+
                     this.result = Result.WIN;
                 }
                 else {
+                    /*
+                    System.out.println("====== TERMINAL ======");
+                    environment.printEnvironment();
+                    System.out.println("Player color: " + player);
+                    System.out.println("Current player: " + currentPlayer);
+                    */
                     this.result = Result.LOSS;
                 }
                 evaluateTerminal();
                 return true;
             }
-            if(this.environment.getBlacks().contains(new Point(i, 0))) {
+            if(this.environment.getBlacks().contains(new Point(i, 1))) {
                 if(player == player.BLACK && currentPlayer) {
                     this.result = Result.WIN;
                 }
@@ -133,7 +144,7 @@ public class State {
                 return true;
             }
         }
-        if(legalActions().isEmpty()) {
+        if(legalActions().isEmpty() || environment.getBlacks().isEmpty() || environment.getWhites().isEmpty()) {
             this.result = Result.DRAW;
             evaluateTerminal();
             return true;
