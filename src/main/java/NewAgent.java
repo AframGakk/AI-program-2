@@ -38,6 +38,8 @@ public class NewAgent implements Agent {
 		State firstState = new State(environment, player, true);
 		root = new StateNode(firstState);
 
+		//vantar depth
+
 	}
 
 	// lastMove is null the first time nextAction gets called (in the initial state)

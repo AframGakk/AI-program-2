@@ -113,43 +113,76 @@ public class State {
     }
 
     //returns true if isTerminal else false
-    public boolean isTerminal() {
+    /*public boolean isTerminal() {
         for(int i = 1; i < this.environment.getBoardWidth(); i++) {
             if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
-                if(player == player.WHITE && currentPlayer) {
-
-
-                    this.result = Result.WIN;
+                if(player == player.BLACK && currentPlayer) {
+                    this.result = Result.LOSS;
                 }
                 else {
-                    /*
-                    System.out.println("====== TERMINAL ======");
-                    environment.printEnvironment();
-                    System.out.println("Player color: " + player);
-                    System.out.println("Current player: " + currentPlayer);
-                    */
-                    this.result = Result.LOSS;
+                    this.result = Result.WIN;
                 }
                 evaluateTerminal();
                 return true;
             }
-            if(this.environment.getBlacks().contains(new Point(i, 1))) {
-                if(player == player.BLACK && currentPlayer) {
-                    this.result = Result.WIN;
+            if(this.environment.getBlacks().contains(new Point(i, 0))) {
+                if(player == player.WHITE && currentPlayer) {
+                    this.result = Result.LOSS;
                 }
                 else {
-                    this.result = Result.LOSS;
+                    this.result = Result.WIN;
                 }
                 evaluateTerminal();
                 return true;
             }
         }
-        if(legalActions().isEmpty() || environment.getBlacks().isEmpty() || environment.getWhites().isEmpty()) {
+        // vantar ef pawn klárast líka hvoru meginn þá er DRAW
+        if(legalActions().isEmpty() || this.environment.getBlacks().isEmpty() || this.environment.getWhites().isEmpty()) {
             this.result = Result.DRAW;
             evaluateTerminal();
             return true;
         }
         evaluateNonTerminal();
+        return false;
+    }
+    */
+    // Auka ívars shit
+    public boolean isTerminal() {
+        if (this.goalState()) {
+            if(currentPlayer) {
+                this.result = Result.WIN;
+            } else {
+                this.result = Result.LOSS;
+
+            }
+            evaluateTerminal();
+            return true;
+        }
+        if (legalActions().isEmpty() || this.environment.getBlacks().isEmpty() || this.environment.getWhites().isEmpty()) {
+            this.result = Result.DRAW;
+            evaluateTerminal();
+            return true;
+        }
+        if (player == player.WHITE) {
+            for (int i = 1; i < this.environment.getBoardWidth(); i++) {
+                if (this.environment.getBlacks().contains(new Point(i, 1))) {
+                    this.result = Result.LOSS;
+                    evaluateTerminal();
+                    return true;
+                }
+            }
+
+        }
+        if (player == player.BLACK) {
+            for (int i = 1; i < this.environment.getBoardWidth(); i++) {
+                if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
+                    this.result = Result.LOSS;
+                    evaluateTerminal();
+                    return true;
+                }
+            }
+
+        }
         return false;
     }
 
@@ -198,6 +231,25 @@ public class State {
             } else {
                 return minWhite - minBlack;
             }
+        }
+    }
+    ///EXTRA
+    public boolean goalState() {
+        if(this.player == player.WHITE) {
+            for(int i = 1; i < this.environment.getBoardWidth(); i++) {
+                if (this.environment.getWhites().contains(new Point(i, this.environment.getBoardHeight()))) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else {
+            for(int i = 1; i < this.environment.getBoardWidth(); i++) {
+                if(this.environment.getBlacks().contains(new Point(i, 1))) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
