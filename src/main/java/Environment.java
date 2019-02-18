@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.util.HashSet;
 
+/**
+ * The environment of the board
+ * */
 public class Environment {
     private int boardWidth;
     private int boardHeight;
@@ -23,6 +26,9 @@ public class Environment {
         this.blacks = blacks;
     }
 
+    /**
+     * Sets up the white and black pawns in a starting position on the board
+     * */
     public void init_env() {
 
         //init for white pawns position
@@ -39,6 +45,9 @@ public class Environment {
         }
     }
 
+    /**
+     * Checks if a pawn can capture to the left
+     * */
     public boolean canCaptureLeft(Point pawn, Player player) {
         if(player == Player.WHITE) {
             return blacks.contains(new Point(pawn.x + 1, pawn.y + 1));
@@ -47,6 +56,9 @@ public class Environment {
         }
     }
 
+    /**
+     * Checks if a pawn can capture to the right
+     * */
     public boolean canCaptureRight(Point pawn, Player player) {
         if(player == Player.WHITE) {
             return blacks.contains(new Point(pawn.x - 1, pawn.y + 1));
@@ -55,6 +67,9 @@ public class Environment {
         }
     }
 
+    /**
+     * Checks if a pawn can move forward
+     * */
     public boolean canGoForward(Point pawn, Player player) {
         if(player == Player.WHITE) {
             return !(blacks.contains(new Point(pawn.x, pawn.y + 1)) || pawn.y == this.boardHeight || whites.contains(new Point(pawn.x, pawn.y + 1)));
@@ -79,7 +94,9 @@ public class Environment {
         return whites;
     }
 
-
+    /**
+     * Moves a pawn made with a specific action
+     * */
     public void movePlayer(Action action, Player player) {
         if (player == Player.WHITE) {
             if(whites.contains(action.from)) {

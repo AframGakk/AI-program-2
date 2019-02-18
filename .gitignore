@@ -1,7 +1,7 @@
 .idea/
 AI-program-2.iml
 .vs/
-dist/
+
 target/
 .classpath
 .project

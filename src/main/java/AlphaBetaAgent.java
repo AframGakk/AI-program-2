@@ -93,6 +93,14 @@ public class AlphaBetaAgent implements Agent {
 
     }
 
+
+    /**
+     * The alpha beta search made for the root node only. This includes the iterative deepening loop.
+     *
+     * @Param state the root state or beginning state of the move
+     * @Param alpha the max value for pruning
+     * @Param beta the min value for pruning
+     * */
     public Action rootSearch(State state, int alpha, int beta) {
 
         int maxVal = Integer.MIN_VALUE;
@@ -125,7 +133,15 @@ public class AlphaBetaAgent implements Agent {
         return action;
     }
 
-    //Pseduo-code
+    /**
+     * The recursive function for alpha beta search. Every expanded node goes through this function and
+     * returns an integer
+     *
+     * @Param depth how deep in the tree recursion is the algorithm
+     * @Param state the state being checked for terminal or child states
+     * @Param alpha the maximum value for pruning
+     * @Param beta the minimum value for pruning
+     * */
     public int AlphaBetaSearch(int depth, State state, int alpha, int beta) throws TimeException {
 
         stats.incrExpansion();
@@ -156,6 +172,9 @@ public class AlphaBetaAgent implements Agent {
         return maxValue;
     }
 
+    /**
+     * A function to estimate the state space size at initialitation.
+     * */
     private int depthEstimation(int boardHeight, int boardWidth) {
         return (((boardHeight - 1) + (boardHeight - 2))*2) * boardWidth + 1;
     }
